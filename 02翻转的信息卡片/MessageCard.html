@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MessageCard</title>
+    <script src="myTemplate.js"></script>
+</head>
+<style>
+    html {
+        background-image: linear-gradient(rgb(206, 199, 233), #ffb6c1);
+        height: 100%;
+    }
+
+    * {
+        text-decoration: none;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .mainbody {
+        width: 300px;
+        height: 300px;
+        perspective: 700px;
+    }
+
+    .turnbox {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border-radius: 30px;
+        box-shadow: 0px 3px 5px gray;
+        transition: all 0.5s;
+        /* 让孩子盒子保留3d效果 */
+        transform-style: preserve-3d;
+    }
+
+    .picturebox,
+    .bodybox {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 30px;
+        backface-visibility: hidden;
+        background-color: lightpink;
+    }
+
+    /* .mainbody:hover {
+        transform: rotateY(180deg);//鼠标失焦，会闪烁,再加一个盒子（turnbox）
+    } */
+
+    .picturebox {
+        background-image: url('portrait.jpg');
+        background-size: cover;
+        /*背面盒子不显示解决方法：
+        1.在正面盒子中修改z-index: 1 为 transform: translateZ(1px)
+        2.在正面盒子里加backface-visibility: hidden */
+
+        z-index: 1;
+    }
+
+    .bodybox {
+        transform: rotateY(180deg);
+    }
+
+
+    .portrait {
+        margin-left: 50%;
+        transform: translateX(-50%);
+        margin-top: 40px;
+        width: 100px;
+        height: 100px;
+        border-radius: 50px;
+        box-shadow: inset 0 0 3px gray;
+        background-image: url('portrait.jpg');
+        background-size: cover;
+    }
+
+    #messageCard {
+        width: 100%;
+        height: 100px;
+        padding: 30px;
+    }
+
+    ul li {
+        font-size: 12px;
+        font-weight: lighter;
+        letter-spacing: 2px;
+        color: #6c6696;
+        font-style: italic;
+    }
+
+    ul li:nth-child(1) {
+        font-size: 24px;
+        color: white;
+        text-align: center;
+        font-weight: bold;
+        padding-bottom: 15px;
+    }
+
+    ul li em {
+        font-size: 14px;
+        font-weight: 400;
+        color: white;
+        padding-left: 20px;
+        padding-right: 5px;
+    }
+</style>
+
+<body>
+    <div class="mainbody">
+        <div class="turnbox">
+            <div class="picturebox"></div>
+            <div class="bodybox">
+                <div class="portrait"></div>
+                <!-- 内容盒子 -->
+                <div id="messageCard"></div>
+            </div>
+        </div>
+
+    </div>
+    <!-- 模板 -->
+    <script type="text/html" id="message">
+        <ul>
+            <li>{{name}}</li>
+            <li><em>Tel. - </em>{{phone}}</li>
+            <li><em>Addr. - </em>{{address}}</li>
+            <li><em>Email - </em>{{email}}</li>
+        </ul>
+    </script>
+    <!-- 预调用模板引擎 -->
+    <script>
+        // 定义数据
+        var data = { name: 'Eileen HEY', phone: '1566778896', email: 'eileen@163.com', address: 'China ChengDu' }
+
+        // 调用模板函数
+        var addData = template('message', data);
+        console.log(data);
+        // 渲染html结构
+        document.getElementById('messageCard').innerHTML = addData;
+    </script>
+    <script>
+        //两面翻转盒子，解决频繁闪烁，添加外层盒子鼠标事件
+        var mainbody = document.querySelector('.mainbody');
+        var turnbox = document.querySelector('.turnbox');
+        mainbody.addEventListener('mouseover', function () {
+            turnbox.style.transform = "rotateY(-180deg)";
+        })
+        mainbody.addEventListener('mouseleave', function () {
+            turnbox.style.transform = "";
+        })
+
+    </script>
+</body>
+
+</html>
