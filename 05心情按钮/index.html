@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+            border-width: 0px;
+            list-style: none;
+        }
+
+        #root {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: repeating-linear-gradient(to bottom right, #ffdde1 1%, #ee9ca7 5%, #ffdde1 10%);
+        }
+
+        h1 {
+            position: absolute;
+            top: 80px;
+            left: 40px;
+            transform: rotate(-30deg);
+            text-align: center;
+            font-size: 50px;
+            vertical-align: bottom;
+            flex: 1;
+        }
+
+        ul {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        li {
+            position: relative;
+            width: 180px;
+            height: 200px;
+            background-image: url('./mood.png');
+            background-size: 1000px;
+            background-position: var(--bg);
+            background-repeat: no-repeat;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+
+        ul li::before {
+            position: absolute;
+            bottom: 0;
+            left: 90px;
+            transform: translateX(-50%);
+            content: attr(mood);
+            color: white;
+            letter-spacing: 5px;
+            -webkit-text-stroke: 2px
+        }
+
+        ul li:hover {
+            transform: scale(1.1);
+        }
+
+        dialog {
+            position: relative;
+            position: absolute;
+            left: 50vw;
+            top: 50vh;
+            transform: translate(-50%, -50%);
+            width: 80vw;
+            height: 80vh;
+            border-radius: 20px;
+        }
+
+        dialog::backdrop {
+            position: fixed;
+            right: 0;
+            top: 0;
+            background: agba(0, 0, 0, 0.5);
+        }
+
+        button {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            background-color: #ee9ca7;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            z-index: 11;
+            transition: all 0.5s;
+            border-width: 0px;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+        }
+
+        .title {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            font-size: 30px;
+            letter-spacing: 2px;
+            font-weight: bolder;
+            background-color: antiquewhite;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100%;
+            font-size: 20px;
+            border-width: 0px;
+            resize: none;
+            background-color: #ee9ca7;
+        }
+
+        textarea:focus {
+            border-width: 0px;
+            outline-style: none;
+            background-color: #ee9ca7;
+        }
+
+        .content {
+            padding: 40px;
+            padding-top: 60px;
+            background-color: #ee9ca7;
+            width: 100%;
+            height: 100%;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root">
+        <h1>今日MOOD</h1>
+        <ul id="moods">
+            <li style='--bg:-63.5px -554.5px' mood="sad"></li>
+            <li style='--bg:-265.5px -554.5px' mood="angry"></li>
+            <li style='--bg:-467.5px -554.5px' mood="happy"></li>
+            <li style='--bg:-63.5px  -753.5px' mood="horrible"></li>
+            <li style='--bg:-265.5px -753.5px' mood="against"></li>
+            <li style='--bg:-467.5px -753.5px' mood="good"></li>
+        </ul>
+        <dialog id="infoBoard">
+            <button> × </button>
+            <div class="title"></div>
+            <div class="content"></div>
+        </dialog>
+    </div>
+
+</body>
+<script>
+    //不能用
+    // $(function () {
+    //     $('#moods li').on('click', () => {
+    //         $('dialog').showModal();
+    //     })
+    // })
+    var moods = document.querySelectorAll('#moods li');
+    var infoBoard = document.querySelector('#infoBoard');
+    var title = document.querySelector('.title');
+    var date = document.querySelector('.date');
+    var content = document.querySelector('.content');
+    //遍历方法一：
+    // for (var i = 0; i < moods.length; i++) {
+    //     (function (i) {
+    //         moods[i].addEventListener('click', function () {
+    //             infoBoard.showModal();
+    //         })
+    //     }(i))
+    // }
+    //遍历方法二：
+    // moods.forEach((mood) => {
+    //     mood.addEventListener('click', function () {
+    //         infoBoard.showModal();
+    //     })
+    // })
+    //遍历方法三：for of 遍历数组value
+    for (mood of moods) {
+        mood.addEventListener('click', function () {
+            infoBoard.showModal();
+            var nmood = this.getAttribute('mood');
+            title.innerHTML = nmood;
+            var time = timeFormat(new Date);
+            var timer = document.createTextNode('\n' + time + ' ' + nmood + '\n');
+            // content.innerHTML = '<br>' + time + ' ' + nmood + '<br>';
+            content.appendChild(timer);
+        })
+    }
+    //遍历方法四：报错！！！ for in 遍历数组key
+    // for of用于遍历数组元素（遍历时不会把方法遍历出来）
+    // for in用于遍历对象属性和方法
+    // console.log(moods)
+    // for (mood in moods) {
+    //         console.log(mood);
+    //         // moods[mood].addEventListener('click', function () {
+    //         //     infoBoard.showModal();
+    //         // })
+    //     }
+    function timeFormat(timeStr) {
+        var Y = timeStr.getFullYear();
+        var M = addzero(timeStr.getMonth() + 1);
+        var D = addzero(timeStr.getDate());
+        var H = addzero(timeStr.getHours());
+        var m = addzero(timeStr.getMinutes());
+        var s = addzero(timeStr.getSeconds());
+        return Y + '/' + M + '/' + D + ' ' + H + ':' + m + ':' + s
+    }
+    function addzero(num) {
+        return num > 9 ? num : '0' + num;
+    }
+    var btn = document.querySelector('button');
+    btn.addEventListener('click', function () {
+        let words = document.querySelector('.content textarea');
+        if (words) {
+            var edtext = words.value.replace(new RegExp("\n", "gm"), "<br>");
+            content.innerHTML = edtext;
+        }
+        infoBoard.close();
+    })
+
+    content.addEventListener('dblclick', function () {
+        window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
+
+        var texts = this.innerHTML;
+        texts = texts.replace(/<br>/g, "\n")
+        content.innerHTML = '<textarea></textarea>'
+        this.children[0].value = texts;
+        this.children[0].onblur = function () {
+            var edtext = this.value.replace(new RegExp("\n", "gm"), "<br>");
+            this.parentNode.innerHTML = edtext;
+        }
+    })
+
+
+</script>
+
+</html>

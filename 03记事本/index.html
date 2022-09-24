@@ -197,11 +197,11 @@
 
 
     //创建全局获取变量
-    var that;
+    // var that;
 
     class diaryBaord {
         constructor(mainbody) {
-            that = this;
+            // that = this;
             this.mbody = document.querySelector(mainbody);
             this.addpage = this.mbody.querySelector('.addpage');
             this.nav = this.mbody.querySelector('.navlist');
@@ -220,12 +220,15 @@
             this.upload();
             for (var i = 0; i < this.list.length; i++) {
                 this.list[i].index = i;
-                this.list[i].onclick = this.toggleshift;
-                this.delbutton[i].onclick = this.removenote;
+                //使用bind函数，可以在不创建全局变量that的情况下实现指向传递
+                //bind函数可以改变函数的内部指向，并且不会立即执行，会等到对象绑定的事件完成才会调用
+                //这里不需要改变函数的内部指向，但要新增this指向对象，可以将这里的this作为参数传递给函数调用
+                this.list[i].onclick = this.toggleshift.bind(this.list[i], this);
+                this.delbutton[i].onclick = this.removenote.bind(this.delbutton[i], this);
                 this.textarea[i].ondblclick = this.doubleclick;
                 this.content[i].ondblclick = this.edict;
             }
-            this.addpage.onclick = this.addnote;
+            this.addpage.onclick = this.addnote.bind(this.addpage, this);
             //最多创建6章笔记
             if (this.list.length == 6) {
                 this.addpage.style.display = 'none';
@@ -241,13 +244,14 @@
             }
         }
         //导航栏笔记切换功能
-        toggleshift() {
+        //that形参用于接收上面调用toggleshift函数所传递this，这也就可在函数中调用that指向constructor中的this
+        toggleshift(that) {
             that.delchecked();
             this.className = 'checkedlist';
             that.content[this.index].className = 'checkedcontent';
         }
         //笔记添加功能
-        addnote() {
+        addnote(that) {
             var nav_li = '<li class="checkedlist"> <span>My diary</span><span>×</span></li>';
             var cont_li = '<li class="checkedcontent">New Page</li>'
             that.delchecked();
@@ -256,7 +260,7 @@
             that.init();
         }
         //笔记删除功能
-        removenote(e) {
+        removenote(that, e) {
             e.stopPropagation();//阻止冒泡，防止触发li的切换点击事件
             var del_index = this.parentNode.index;
             // 用remove方法直接删除选取的元素
