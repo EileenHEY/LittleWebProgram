@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eileen</title>
+    <link rel="stylesheet"
+        href="https://at.alicdn.com/t/c/font_3678816_tp1kaa5nc.css?spm=a313x.7781069.1998910419.53&file=font_3678816_tp1kaa5nc.css">
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
+
+        li {
+            position: relative;
+            display: inline-block;
+            margin: 0 10px;
+            list-style: none;
+            width: 50px;
+            height: 50px;
+            z-index: 3;
+            transition: all 0.5s;
+        }
+
+        li::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            transform: scale(1.2);
+            background-color: white;
+            z-index: -1;
+        }
+
+        li::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: aqua;
+            box-shadow: 0 0 14px 2px aqua;
+            transform: scale(0.2);
+            transition: all 0.5s;
+            z-index: -2;
+        }
+
+        li:hover {
+            text-shadow: 0 0 3px aqua;
+        }
+
+
+
+        li:hover::after {
+            transform: scale(1.2);
+        }
+
+        ul li a {
+            color: black;
+            text-align: center;
+            line-height: 50px;
+            font-size: 50px !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="nav">
+        <ul>
+            <li><a class="iconfont icon-QQ"></a></li>
+            <li><a class="iconfont icon-weixin"></a></li>
+            <li><a class="iconfont icon-weibo"></a></li>
+            <li><a class="iconfont icon-github"></a></li>
+            <li><a class="iconfont icon-douyin"></a></li>
+        </ul>
+    </div>
+</body>
+
+</html>
