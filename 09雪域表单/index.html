@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eileen</title>
+    <script src="particles.min.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .background {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            background-color: #0b141b;
+        }
+
+        .box {
+            background-image: url("水墨山1.jpg");
+            background-size: cover;
+            width: 530px;
+            height: 280px;
+            position: relative;
+        }
+        .minbox{
+            width: 305px;
+            height: 305px;
+            position: absolute;
+            top: -15px;
+            right: -5px;
+            overflow: hidden;
+        }
+        .coloractive{
+            width: 305px;
+            height: 305px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .coloractive::after{
+            content: "";
+            width: 440px;
+            height: 440px;
+            position: absolute;
+
+            background: conic-gradient(transparent, transparent, transparent, transparent, white);
+            animation: animates 4s linear infinite;
+        }
+        .coloractive::before{
+            content: "";
+            width: 440px;
+            height: 440px;
+            position: absolute;
+            background: conic-gradient(transparent, transparent, transparent, transparent, white);
+   
+            animation: animates 4s linear -2s infinite;
+        }
+        @keyframes animates {
+            0%{
+                transform: rotate(0deg);
+            }
+            100%{
+                transform: rotate(360deg);
+            }
+        }
+        .sebox{
+            width: 300px;
+            background-color: #0a1720;
+            height: 300px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 11;
+        }
+        .logo{
+            line-height: 3;
+            font-size: 30px;
+            font-weight: bolder;
+            color: white;
+        }
+
+        .login {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;    
+        }
+
+        input,
+        button {
+            width: 200px;
+            height: 40px;
+            margin-bottom: 20px;
+            border-width: 0;
+            background-color: transparent;
+            z-index: 1;
+            color: white;
+        }
+
+        .login svg {
+            position: absolute;
+            top: 40px;
+            left: -5px;
+            z-index: 0;
+        }
+
+        path {
+            /* stroke:url(#linear); */
+            stroke: white;
+            stroke-width: 2px;
+            fill: none;
+            stroke-linecap: round;
+            stroke-dasharray: 200px 10000px;
+            stroke-dashoffset: 200px;
+            transition: all 0.5s;
+            z-index: 11;
+
+        }
+        input{
+            outline-style: none;   
+        }
+        input::placeholder{
+            color:rgba(255, 255, 255,0.5)
+        }
+        button{
+            transition: all 2s;
+        }
+        button:hover{
+            background-color: white;
+            color: black;
+            font-weight: bold;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="box">
+            <div class="minbox">
+                <div class="coloractive">
+                    <div class="sebox">
+                        <div class="logo">LOGING</div>
+                        <div class="login">
+                            <input type="text" name="name" id="user" placeholder="username">
+                            <input type="password" name="pwd" id="pwd" placeholder="password">
+                            <button id="btn">登录</button>
+                            <svg width="210px" height="200px">
+                                <!-- <defs> 
+                                    <linearGradient id="linear" x1="0%" y1="0%" x2="100%" y2="0%"> 
+                                        <stop offset="0%" stop-color="white"/> 
+                                        <stop offset="100%" stop-color="transparent"/> 
+                                    </linearGradient> 
+                                </defs> -->
+                                <path d="
+                                M 5,5
+                                L 205,5
+                                L 205,62
+                                L 5,62
+                                L 5,120
+                                L 205,120
+                                L 205,80
+                                L 5,80
+                                " id="line">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+    <canvas class="background"></canvas>
+</body>
+<script>
+    Particles.init({
+    selector: '.background',
+    color:'white',
+    maxParticles: 450,
+  });
+  
+    var user=document.getElementById("user");
+    var line=document.getElementById("line");
+    var pwd=document.getElementById("pwd");
+    var btn=document.getElementById("btn");
+    user.addEventListener("focus",function(){
+        line.style.display="block";
+        line.style.strokeDashoffset=0;
+    })
+    user.addEventListener("click",function(){
+        line.style.display="block";
+        line.style.strokeDashoffset=0;
+    })
+    user.addEventListener("blur",function(){
+        line.style.strokeDashoffset=200;
+    })
+    pwd.addEventListener("focus",function(){
+        line.style.display="block";
+        line.style.strokeDashoffset=-257;
+    })
+    pwd.addEventListener("click",function(){
+        line.style.display="block";
+        line.style.strokeDashoffset=-257;
+    })
+    pwd.addEventListener("blur",function(){
+        line.style.strokeDashoffset=200;
+    })
+    btn.addEventListener("mouseenter",function(){
+        line.style.display="block";
+        line.style.strokeDasharray="480px 1000px";
+        line.style.strokeDashoffset=-477;
+    })
+    btn.addEventListener("mouseleave",function(){
+        line.style.strokeDasharray="200px 1000px";
+        line.style.strokeDashoffset=200;
+    })
+</script>
+
+</html>
